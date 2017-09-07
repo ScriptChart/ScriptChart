@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
+using DataConv;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using SvgChart;
 
 namespace WebApi.Controllers
@@ -11,34 +15,39 @@ namespace WebApi.Controllers
     [Route("api/[controller]")]
     public class LineChartController : Controller
     {
-        // GET api/values
+        // GET api/linechart
         [HttpGet]
         public IEnumerable<string> Get()
         {
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/values/5
+        // GET api/linechart/5
         [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/values
+        // POST api/linechart
         [HttpPost]
-        public ContentResult Post([FromBody]string value)
+        public ContentResult Post([FromBody]JToken req)
         {
-            return this.Content($"Works! You've pushed: <{value}>", "application/json");
+            IDataConverter dataConverter = new DataConverter();
+            List<float> data = dataConverter.ConvertData(req, "$..DownloadSpeedInBits");
+            ILineChart lineChart = new SvgLineChart();
+            string result = lineChart.CreateLineChart(data);
+
+            return this.Content(result, "application/xml");
         }
 
-        // PUT api/values/5
+        // PUT api/linechart/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
         }
 
-        // DELETE api/values/5
+        // DELETE api/linechart/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
