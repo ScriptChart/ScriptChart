@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26403.3
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csproj", "{F09AF41B-63E7-41C4-BD75-BE1FC3E69F89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{F09AF41B-63E7-41C4-BD75-BE1FC3E69F89}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SvgChart", "SvgChart\SvgChart.csproj", "{B825DF45-9D00-4D7A-ACEC-65BF397B0278}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SvgChart", "SvgChart\SvgChart.csproj", "{B825DF45-9D00-4D7A-ACEC-65BF397B0278}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataConv", "DataConv\DataConv.csproj", "{86BEE7C1-559E-4F97-8D65-AE6D10E037BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +23,15 @@ Global
 		{B825DF45-9D00-4D7A-ACEC-65BF397B0278}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B825DF45-9D00-4D7A-ACEC-65BF397B0278}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B825DF45-9D00-4D7A-ACEC-65BF397B0278}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86BEE7C1-559E-4F97-8D65-AE6D10E037BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86BEE7C1-559E-4F97-8D65-AE6D10E037BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86BEE7C1-559E-4F97-8D65-AE6D10E037BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86BEE7C1-559E-4F97-8D65-AE6D10E037BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7C20F8E6-AD8D-422B-BFA8-A9D3D272FF0A}
 	EndGlobalSection
 EndGlobal
