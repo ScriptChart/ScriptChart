@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SvgChart;
 
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
-    public class ValuesController : Controller
+    public class LineChartController : Controller
     {
         // GET api/values
         [HttpGet]
@@ -25,8 +27,9 @@ namespace WebApi.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public ContentResult Post([FromBody]string value)
         {
+            return this.Content($"Works! You've pushed: <{value}>", "application/json");
         }
 
         // PUT api/values/5
