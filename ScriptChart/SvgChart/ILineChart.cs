@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SvgChart
 {
-    interface ILineChart
+    public interface ILineChart
     {
         string CreateLineChart(List<Tuple<float, float>> points);
 
