@@ -34,7 +34,7 @@ namespace WebApi.Controllers
         public ContentResult Post([FromBody]JToken req)
         {
             IDataConverter dataConverter = new DataConverter();
-            List<float> data = dataConverter.ConvertData(req, "$..DownloadSpeedInBits");
+            var data = dataConverter.ConvertData(req, "$..Id", "$..DownloadSpeedInBits");
             ILineChart lineChart = new SvgLineChart();
             string result = lineChart.CreateLineChart(data);
 
