@@ -1,59 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Xml;
 
 namespace SvgChart
 {
     public class SvgLineChart : ILineChart
     {
-        private XmlDocument _xml;
-        private XmlElement svg;
-        private List<Tuple<float, float>> _points;
-
-        public List<Tuple<float, float>> Points { get => _points; set => _points = value; }
-
-        public SvgLineChart()
+        public string CreateLineChart(List<Tuple<float, float>> Points)
         {
-            _xml = new XmlDocument();
-            svg = _xml.CreateElement("svg");
-            svg.SetAttribute("version", "1.2");
-            svg.SetAttribute("xmlns", "http://www.w3.org/2000/svg");
-            svg.SetAttribute("xmlns:xlink", "http://www.w3.org/1999/xlink");
-            svg.SetAttribute("width", "400");
-            svg.SetAttribute("height", "400");
-            svg.SetAttribute("viewBox", "-200 -200 400 400");
-            _xml.AppendChild(svg);
-        }
-
-        private void paintLineChart()
-        {
-            XmlElement line = _xml.CreateElement("polyline");
-            svg.AppendChild(line);
-
-            string temp = "";
-            foreach (Tuple<float, float> tuple in Points)
+            float MinX = float.MaxValue;
+            float MaxX = float.MinValue;
+            float MinY = float.MaxValue;
+            float MaxY = float.MinValue;
+            foreach (Tuple<float, float> Point in Points)
             {
-                temp += tuple.Item1 + "," + tuple.Item2 + " ";
+                if (Point.Item1 < MinX) MinX = Point.Item1;
+                if (Point.Item1 > MaxX) MaxX = Point.Item1;
+                if (Point.Item2 < MinY) MinX = Point.Item2;
+                if (Point.Item2 > MaxY) MaxY = Point.Item2;
             }
-            line.SetAttribute("points", temp);
+
+            Svg Svg = new Svg(MinX, MaxX, MinY, MaxY);
+            Svg.polyline("/svg", Points);
+            return Svg.ToString();
         }
 
-        public XmlDocument GetChart()
+        public string CreateLineChart(List<float> Points)
         {
-            paintLineChart();
-            return _xml;
-        }
-
-        public string CreateLineChart(List<Tuple<float, float>> points)
-        {
-            Points = points;
-
-            return GetChart().ToString();
-        }
-
-        public string CreateLineChart(List<float> points)
-        {
-            throw new NotImplementedException();
+            List<Tuple<float, float>> Points2 = new List<Tuple<float, float>>();
+            float x = 0;
+            foreach (float y in Points)
+            {
+                Points2.Add(new Tuple<float, float>(x, y));
+            }
+            return CreateLineChart(Points2);
         }
     }
 }
