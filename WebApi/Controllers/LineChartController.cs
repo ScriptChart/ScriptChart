@@ -12,6 +12,7 @@ using SvgChart;
 using System.IO;
 using Microsoft.Extensions.Primitives;
 using System.Dynamic;
+using WebApi.Model;
 
 namespace WebApi.Controllers
 {
@@ -37,73 +38,53 @@ namespace WebApi.Controllers
 
         // POST api/linechart
         [HttpPost]
-        public JsonResult Post()
+        public async Task<JsonResult> PostAsync()
         {
+            var headers = ConvertHeadersToDictionary(HttpContext.Request.Headers);
+            dynamic result;
+
+            try
+            {
+                var graphic = new GraphicGetter(DataConverter, LineChart);
+                result = await graphic.GetResultAsync(headers, await GetBodyAsync());
+            }
+            catch (Exception exception)
+            {
+                return this.Json(HandleException(exception));
+            }
             
-            string xAxisPath = string.Empty;
-            string yAxisPath = string.Empty;
-            string result = string.Empty;
+            return this.Json(result);
+        }
 
-            StringValues xJpathCollection;
-            StringValues yJpathCollection;
+        private dynamic HandleException(Exception exception)
+        {
+            dynamic errorResult = new ExpandoObject();
+            errorResult.Error = exception.Message;
+            return errorResult;
+        }
 
-            string body;
+        private Dictionary<string, StringValues> ConvertHeadersToDictionary(IHeaderDictionary headerDictionary)
+        {
+            Dictionary<string, StringValues> result = new Dictionary<string, StringValues>();
+            foreach(KeyValuePair<string, StringValues> element in headerDictionary)
+            {
+                result.Add(element.Key, element.Value);
+            }
+
+            return result;
+        }
+
+        private async Task<string> GetBodyAsync()
+        {
             using (var stream = HttpContext.Request.Body)
             {
                 using (var sr = new StreamReader(stream))
                 {
-                    body = sr.ReadToEnd();
+                    return await sr.ReadToEndAsync();
                 }
             }
-
-            JToken jtoken;
-            try
-            {
-                jtoken = JToken.Parse(body);
-            }
-            catch (Exception exception)
-            {
-                dynamic errorResult = new ExpandoObject();
-                errorResult.Error = exception.Message;
-                return Json(errorResult);
-            }
-
-            if (HttpContext.Request.Headers.TryGetValue("X-JPATH-FOR-Y", out yJpathCollection))
-            {
-                yAxisPath = yJpathCollection.FirstOrDefault();
-            }
-            else
-            {
-                throw new HttpRequestException("X-JPATH-FOR-Y header has not been found.");
-            }
-
-            if (HttpContext.Request.Headers.TryGetValue("X-JPATH-FOR-X", out xJpathCollection))
-            {
-                xAxisPath = xJpathCollection.FirstOrDefault();
-                var data = DataConverter.ConvertData(jtoken, xAxisPath, yAxisPath);
-                result = LineChart.CreateLineChart(data);
-            }
-            else
-            {
-                var data = DataConverter.ConvertData(jtoken, yAxisPath);
-                result = LineChart.CreateLineChart(data);
-            }
-
-            dynamic resultObj = new ExpandoObject();
-            resultObj.Svg = result;
-            return this.Json(resultObj);
         }
 
-        // PUT api/linechart/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
 
-        // DELETE api/linechart/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
