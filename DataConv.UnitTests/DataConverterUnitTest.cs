@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
+using DataConv;
 
-namespace DataConv.UnitTests
+namespace UnitTests.DataConv.UnitTests
 {
     [TestClass]
     public class DataConverterUnitTest
@@ -46,7 +47,7 @@ namespace DataConv.UnitTests
 
             for (int i = 0; i < expectedList.Count; i++)
             {
-                if (Math.Abs(expectedList[i].Item1 - actualResult[i].Item1) > 0.000001 
+                if (Math.Abs(expectedList[i].Item1 - actualResult[i].Item1) > 0.000001
                     || Math.Abs(expectedList[i].Item2 - actualResult[i].Item2) > 0.000001)
                 {
                     Assert.Fail($"Expected float value <{expectedList[i]}> does not match the actual <{actualResult[i]}>.");
