@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace WebApi.Model
 {
-    public class GraphicGetter
+    public class GraphicGetter : IGraphicGetter
     {
         private IDataConverter _dataConverter { get; set; } = new DataConverter();
         private ILineChart _lineChart { get; set; } = new SvgLineChart();
