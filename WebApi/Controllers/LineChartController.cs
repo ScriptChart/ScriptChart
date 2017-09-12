@@ -40,51 +40,20 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<JsonResult> PostAsync()
         {
-            var headers = ConvertHeadersToDictionary(HttpContext.Request.Headers);
+            var headers = this.ConvertHeadersToDictionary(HttpContext.Request.Headers);
             dynamic result;
 
             try
             {
                 var graphic = new GraphicGetter(DataConverter, LineChart);
-                result = await graphic.GetResultAsync(headers, await GetBodyAsync());
+                result = await graphic.GetResultAsync(headers, await this.GetBodyAsync(HttpContext.Request.Body));
             }
             catch (Exception exception)
             {
-                return this.Json(HandleException(exception));
+                return this.Json(this.HandleException(exception));
             }
             
             return this.Json(result);
         }
-
-        private dynamic HandleException(Exception exception)
-        {
-            dynamic errorResult = new ExpandoObject();
-            errorResult.Error = exception.Message;
-            return errorResult;
-        }
-
-        private Dictionary<string, StringValues> ConvertHeadersToDictionary(IHeaderDictionary headerDictionary)
-        {
-            Dictionary<string, StringValues> result = new Dictionary<string, StringValues>();
-            foreach(KeyValuePair<string, StringValues> element in headerDictionary)
-            {
-                result.Add(element.Key, element.Value);
-            }
-
-            return result;
-        }
-
-        private async Task<string> GetBodyAsync()
-        {
-            using (var stream = HttpContext.Request.Body)
-            {
-                using (var sr = new StreamReader(stream))
-                {
-                    return await sr.ReadToEndAsync();
-                }
-            }
-        }
-
-
     }
 }

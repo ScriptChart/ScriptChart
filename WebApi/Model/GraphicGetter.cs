@@ -63,7 +63,6 @@ namespace WebApi.Model
 
                 resultObj.Svg = result;
                 return resultObj;
-
             });
         }
     }
