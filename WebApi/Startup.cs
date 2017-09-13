@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace WebApi
 {
@@ -28,6 +29,13 @@ namespace WebApi
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
+            services.AddAuthentication("MyCookieAuthenticationScheme")
+                .AddCookie(options =>
+                {
+                    options.AccessDeniedPath = "/Account/Forbidden/";
+                    options.LoginPath = "/Account/Unauthorized/";
+                });
+
             services.AddMvc();
         }
 
@@ -38,6 +46,7 @@ namespace WebApi
             loggerFactory.AddDebug();
 
             app.UseMvc();
+            app.UseAuthentication();
         }
     }
 }

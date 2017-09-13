@@ -13,6 +13,8 @@ using System.IO;
 using Microsoft.Extensions.Primitives;
 using System.Dynamic;
 using WebApi.Model;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 
 namespace WebApi.Controllers
 {
@@ -24,9 +26,27 @@ namespace WebApi.Controllers
 
         // GET api/linechart
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IEnumerable<string>> Get()
         {
+            await HttpContext.SignInAsync("MyCookieAuthenticationScheme", new ClaimsPrincipal());
             return new string[] { "value1", "value2" };
+        }
+
+        // GET api/linechart/claims
+        [HttpGet("/claims")]
+        public IEnumerable<string> GetClaimsAsync()
+        {
+            List<string> resultList = new List<string>();
+            ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
+            if (null != principal)
+            {
+                foreach (Claim claim in principal.Claims)
+                {
+                    resultList.Add("CLAIM TYPE: " + claim.Type + "; CLAIM VALUE: " + claim.Value);
+                }
+            }
+
+            return resultList;
         }
 
         // GET api/linechart/5
