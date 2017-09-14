@@ -26,9 +26,8 @@ namespace WebApi.Controllers
 
         // GET api/linechart
         [HttpGet]
-        public async Task<IEnumerable<string>> Get()
+        public IEnumerable<string> Get()
         {
-            await HttpContext.SignInAsync("MyCookieAuthenticationScheme", new ClaimsPrincipal());
             return new string[] { "value1", "value2" };
         }
 
@@ -45,7 +44,7 @@ namespace WebApi.Controllers
         {
             var headers = this.ConvertHeadersToDictionary(HttpContext.Request.Headers);
             dynamic result;
-
+       
             try
             {
                 var graphic = new GraphicGetter(DataConverter, LineChart);
@@ -55,10 +54,10 @@ namespace WebApi.Controllers
             {
                 return this.Json(this.HandleException(exception));
             }
-
+       
             var dbw = new DbWriter();
-            dbw.Write(JsonConvert.SerializeObject(result));
-
+            await dbw.WriteAsync(JsonConvert.SerializeObject(result));
+       
             return this.Json(result);
         }
     }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Threading;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using WebApi.Model;
 
 namespace WebApi.Controllers
 {
@@ -14,21 +15,14 @@ namespace WebApi.Controllers
         protected static IMongoClient _client;
         protected static IMongoDatabase _database;
 
-        public void Write(string json)
+        public async Task WriteAsync(string json)
         {
-            _client = new MongoClient("mongodb://root:xxxx@xxx.xxx:27017");
-            //_database = _client.GetDatabase("scriptchart");
-
-            _database = _client.GetDatabase("admin");
-
-            var cols = _database.ListCollections();
-
-            var collection = _database.GetCollection<BsonDocument>("charts");
+            _client = new MongoClient(MongoDbConnectionSettings.Instance.ConnectionString);
+            _database = _client.GetDatabase(MongoDbConnectionSettings.Instance.DbName);
+            var collection = _database.GetCollection<BsonDocument>(MongoDbConnectionSettings.Instance.CollectionName);
 
             var document = BsonDocument.Parse(json);
-            collection.InsertOne(document);
-
+            await collection.InsertOneAsync(document);
         }
-
     }
 }
