@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -50,7 +52,20 @@ namespace WebApi.Model
 
         private string GetConnectionString()
         {
+
+#if DEBUG
+            var secret = File.ReadAllText($"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData)}\\ScriptChart\\secret.json");
+            var secretObj = JsonConvert.DeserializeObject<dynamic>(secret);
+            DbName = secretObj.DbName;
+            CollectionName = secretObj.CollectionName;
+            return secretObj.ConnectionString;
+#endif
+
+#pragma warning disable CS0162 // Unreachable code detected
+            // the code block is only unreachable in debug mode.
+            // should be overriden with local secret.json.
             DbName = GetEnvVarValueOrThrowException("MONGODB_DBNAME");
+#pragma warning restore CS0162 // Unreachable code detected
             CollectionName = GetEnvVarValueOrThrowException("MONGODB_COLLECTION_NAME");
 
             if (!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("MONGODB_CONNECTION_STRING")))
