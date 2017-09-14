@@ -32,23 +32,6 @@ namespace WebApi.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/linechart/claims
-        [HttpGet("/claims")]
-        public IEnumerable<string> GetClaimsAsync()
-        {
-            List<string> resultList = new List<string>();
-            ClaimsPrincipal principal = HttpContext.User as ClaimsPrincipal;
-            if (null != principal)
-            {
-                foreach (Claim claim in principal.Claims)
-                {
-                    resultList.Add("CLAIM TYPE: " + claim.Type + "; CLAIM VALUE: " + claim.Value);
-                }
-            }
-
-            return resultList;
-        }
-
         // GET api/linechart/5
         [HttpGet("{id}")]
         public string Get(int id)
@@ -72,7 +55,10 @@ namespace WebApi.Controllers
             {
                 return this.Json(this.HandleException(exception));
             }
-            
+
+            var dbw = new DbWriter();
+            dbw.Write(JsonConvert.SerializeObject(result));
+
             return this.Json(result);
         }
     }
