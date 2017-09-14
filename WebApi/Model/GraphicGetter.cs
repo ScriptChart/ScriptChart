@@ -2,7 +2,6 @@
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json.Linq;
 using SvgChart;
-using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;

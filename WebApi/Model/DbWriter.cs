@@ -1,16 +1,11 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Threading;
+﻿using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using WebApi.Model;
 
 namespace WebApi.Controllers
 {
-    public class DbWriter
+    public class DbWriter : IDbWriter
     {
         protected static IMongoClient _client;
         protected static IMongoDatabase _database;

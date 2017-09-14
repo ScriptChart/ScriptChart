@@ -1,20 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
 using DataConv;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using SvgChart;
-using System.IO;
-using Microsoft.Extensions.Primitives;
-using System.Dynamic;
 using WebApi.Model;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication;
 
 namespace WebApi.Controllers
 {
@@ -23,6 +15,7 @@ namespace WebApi.Controllers
     {
         IDataConverter DataConverter { get; set; } = new DataConverter();
         ILineChart LineChart { get; set; } = new SvgLineChart();
+        IDbWriter DbWriter { get; set; } = new DbWriter();
 
         // GET api/linechart
         [HttpGet]
@@ -55,8 +48,7 @@ namespace WebApi.Controllers
                 return this.Json(this.HandleException(exception));
             }
        
-            var dbw = new DbWriter();
-            await dbw.WriteAsync(JsonConvert.SerializeObject(result));
+            await DbWriter.WriteAsync(JsonConvert.SerializeObject(result));
        
             return this.Json(result);
         }
