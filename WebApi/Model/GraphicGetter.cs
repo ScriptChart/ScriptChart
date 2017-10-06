@@ -40,6 +40,8 @@ namespace WebApi.Model
 
                 JToken jtoken = JToken.Parse(body);
 
+                dynamic resultObj = new ExpandoObject();
+
                 if (headers.TryGetValue(YHeader, out yJpathCollection))
                 {
                     yAxisPath = yJpathCollection.FirstOrDefault();
@@ -54,14 +56,26 @@ namespace WebApi.Model
                     xAxisPath = xJpathCollection.FirstOrDefault();
                     var data = _dataConverter.ConvertData(jtoken, xAxisPath, yAxisPath);
                     result = _lineChart.CreateLineChart(data);
+
+                    float[][] resdata = new float[data.Count][];
+                    for (int i = 0; i < data.Count; i++)
+                    {
+                        resdata[i] = new float[] { data[i].Item1, data[i].Item2 };
+                    }
+                    resultObj.Data = data;
                 }
                 else
                 {
                     var data = _dataConverter.ConvertData(jtoken, yAxisPath);
                     result = _lineChart.CreateLineChart(data);
-                }
 
-                dynamic resultObj = new ExpandoObject();
+                    float[][] resdata = new float[data.Count][];
+                    for (int i = 0; i < data.Count; i++)
+                    {
+                        resdata[i] = new float[] { i, data[i] };
+                    }
+                    resultObj.Data = resdata;
+                }
 
                 resultObj.Svg = result;
                 resultObj.ChartId = hashId;
