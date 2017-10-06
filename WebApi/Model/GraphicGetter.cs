@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json.Linq;
 using SvgChart;
+using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -32,6 +33,8 @@ namespace WebApi.Model
                 string yAxisPath = string.Empty;
                 string result = string.Empty;
 
+                string hashId = new HashidsNet.Hashids().EncodeLong(new long[] { new Random().Next(), DateTime.Now.Ticks });
+
                 StringValues xJpathCollection;
                 StringValues yJpathCollection;
 
@@ -61,6 +64,7 @@ namespace WebApi.Model
                 dynamic resultObj = new ExpandoObject();
 
                 resultObj.Svg = result;
+                resultObj.ChartId = hashId;
                 return resultObj;
             });
         }
