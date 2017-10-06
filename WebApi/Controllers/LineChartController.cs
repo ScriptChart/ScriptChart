@@ -16,6 +16,7 @@ namespace WebApi.Controllers
         IDataConverter DataConverter { get; set; } = new DataConverter();
         ILineChart LineChart { get; set; } = new SvgLineChart();
         IDbWriter DbWriter { get; set; } = new DbWriter();
+        IDbReader DbReader { get; set; } = new DbReader();
 
         // GET api/linechart
         [HttpGet]
@@ -24,11 +25,11 @@ namespace WebApi.Controllers
             return new string[] { "value1", "value2" };
         }
 
-        // GET api/linechart/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        // GET api/linechart/JlyYG8Wcn5kAj1ZD2Y8
+        [HttpGet("{chartId}")]
+        public async Task<JsonResult> GetAsync(string chartId)
         {
-            return "value";
+            return Json(await DbReader.ReadChartAsync(chartId));
         }
 
         // POST api/linechart
