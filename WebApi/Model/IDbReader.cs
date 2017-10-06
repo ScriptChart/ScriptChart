@@ -4,6 +4,6 @@ namespace WebApi.Controllers
 {
     public interface IDbReader
     {
-        Task<float[][]> ReadChartAsync(string chartId);
+        float[][] ReadChart(string chartId);
     }
 }

@@ -27,9 +27,9 @@ namespace WebApi.Controllers
 
         // GET api/linechart/JlyYG8Wcn5kAj1ZD2Y8
         [HttpGet("{chartId}")]
-        public async Task<JsonResult> GetAsync(string chartId)
+        public JsonResult Get(string chartId)
         {
-            return Json(await DbReader.ReadChartAsync(chartId));
+            return Json(DbReader.ReadChart(chartId));
         }
 
         // POST api/linechart

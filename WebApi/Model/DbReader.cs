@@ -12,14 +12,14 @@ namespace WebApi.Controllers
         protected static IMongoClient _client;
         protected static IMongoDatabase _database;
 
-        public async Task<float[][]> ReadChartAsync(string chartId)
+        public float[][] ReadChart(string chartId)
         {
             _client = new MongoClient(MongoDbConnectionSettings.Instance.ConnectionString);
             _database = _client.GetDatabase(MongoDbConnectionSettings.Instance.DbName);
             var collection = _database.GetCollection<ChartCollectionDeserializer>(MongoDbConnectionSettings.Instance.CollectionName);
 
-            var result = await collection.FindAsync(x => x.ChartId.Equals(chartId));
-            var data = await result.FirstOrDefaultAsync();
+            var result = collection.Find<ChartCollectionDeserializer>(x => x.ChartId.Equals(chartId));
+            var data = result.FirstOrDefault();
             return data.Data;
         }
     }
