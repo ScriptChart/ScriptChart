@@ -62,7 +62,7 @@ namespace WebApi.Model
                     {
                         resdata[i] = new float[] { data[i].Item1, data[i].Item2 };
                     }
-                    resultObj.Data = data;
+                    resultObj.Data = resdata;
                 }
                 else
                 {
