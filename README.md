@@ -8,7 +8,7 @@ Imagine you work in your script console of choice. You have acquired some object
 Let's say we use PowerShell. We generate some random array of 100 numbers in range from 0 to 50:
 
 ```powershell
-$randNum = Get-Random -Count 100 -InputObject (0..50)
+$randNum = Get-Random -Count 100 -InputObject (0..99)
 ```
 
 Now let's create a Json object to store this data:
@@ -49,7 +49,7 @@ and just submit it:
 ```powershell
 $resp = Invoke-RestMethod -Method Post -Body $json -Headers $headers -Uri http://alexp.tech/api/linechart
 ```
-In the response you will get your chart id. Navigate to [ScriptChart service](https://alexp.tech:8080), enter your chart id, and click submit button. [This is how your chart will look like](http://alexp.tech:8080/8R108zTkLm9Lmy02zg)
+In the response you will get your chart id. Navigate to [ScriptChart service](https://alexp.tech:8080), enter your chart id, and click submit button. [This is how your chart will look like](http://alexp.tech:8080/jZOx5xlCOPzgVxxBKBR)
 
 
 ![](https://alexproj.visualstudio.com/_apis/public/build/definitions/7455326a-b67c-421b-aabd-d763c6ae6114/5/badge)
