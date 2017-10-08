@@ -20,7 +20,7 @@ namespace WebApi.Controllers
 
             var result = collection.Find<ChartCollectionDeserializer>(x => x.ChartId.Equals(chartId));
             var data = result.FirstOrDefault();
-            return data.Data;
+            return data?.Data;
         }
     }
 }
