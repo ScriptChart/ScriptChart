@@ -47,9 +47,9 @@ $headers.Add("X-JPATH-FOR-Y", '$..num')
 and just submit it:
 
 ```powershell
-$resp = Invoke-RestMethod -Method Post -Body $json -Headers $headers -Uri http://alexp.tech/api/linechart
+$resp = Invoke-RestMethod -Method Post -Body $json -Headers $headers -Uri http://scriptchart.org/api/linechart
 ```
-In the response you will get your chart id. Navigate to [ScriptChart service](https://alexp.tech:8080), enter your chart id, and click submit button. [This is how your chart will look like](http://alexp.tech:8080/jZOx5xlCOPzgVxxBKBR)
+In the response you will get your chart id. Navigate to [ScriptChart service](https://scriptchart.org:8080), enter your chart id, and click submit button. [This is how your chart will look like](http://scriptchart.org:8080/jZOx5xlCOPzgVxxBKBR)
 
 
 ![](https://alexproj.visualstudio.com/_apis/public/build/definitions/7455326a-b67c-421b-aabd-d763c6ae6114/5/badge)
